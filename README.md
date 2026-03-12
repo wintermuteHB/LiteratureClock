@@ -4,49 +4,26 @@
 
 A minimal web clock that displays a literary quote matching the current time. Every minute, a new passage — drawn from novels, poetry, and stories — where the exact time appears in the text.
 
-> *"It was half past twelve when James Bond turned the corner."*
-> — Ian Fleming, *Casino Royale*
+**[→ Try it live](https://simiono.com/clock/)** · **[Read the essay](https://simiono.com/Literature-Clock.html)**
 
-## Concept
+## The Clock
 
 A single screen. The time. A quote. The book. The author. Nothing else.
 
 The clock cycles through curated literary excerpts where the current time is explicitly mentioned. At 07:30, you might read Hemingway. At 23:15, perhaps Murakami. Every minute of the day has its own literary moment.
-
-## Design
-
-```
-┌─────────────────────────────────────────────┐
-│                                             │
-│                                             │
-│   "It was five minutes past five in the     │
-│    afternoon when the train pulled in."     │
-│                                             │
-│              — Graham Greene                │
-│           The Orient Express                │
-│                                             │
-│                  17:05                       │
-│                                             │
-└─────────────────────────────────────────────┘
-```
 
 - **Typography-first.** The quote is the hero. Large, elegant serif font.
 - **Dark mode default.** Warm off-white text on deep black. Easy on the eyes at 3 AM.
 - **No UI chrome.** No buttons, no menus. Click/tap for next quote at same time.
 - **Responsive.** From phone nightstand to wall-mounted display.
 
-## Features (Planned)
+## Collection
 
-- Multiple quotes per minute — random selection or cycle
-- Smooth fade transitions between minutes
-- Fullscreen mode (ideal for screensaver use)
-- Language support (English primary, German secondary)
-- PWA — installable, works offline
-- Optional: ambient background color shift through the day (dawn warm → noon bright → night cool)
+**910 quotes** from **374 authors** across **399 unique time slots**.
 
-## Data Format
+Top contributors: Mark Haddon (56), Steve Toltz (24), David Foster Wallace (23), Sophie Kinsella (23), Douglas Adams (20), Haruki Murakami (19).
 
-Quotes stored as JSON:
+Quotes stored as JSON in `data/quotes.json`:
 
 ```json
 {
@@ -58,20 +35,39 @@ Quotes stored as JSON:
 }
 ```
 
+## Quote Extraction Tool
+
+The repo includes `scripts/extract-quotes.py` — a Python tool that scans ePub files for time-of-day references and outputs them as import-ready CSV or JSON.
+
+```bash
+# Single book
+python3 scripts/extract-quotes.py book.epub
+
+# Entire library
+python3 scripts/extract-quotes.py /path/to/library/ -o found-quotes.csv
+
+# Only high-confidence matches, as JSON
+python3 scripts/extract-quotes.py *.epub --confidence high --json
+```
+
+**Pattern recognition** covers digital times (3:45 PM), military (0800h), word forms ("half past seven", "quarter to nine", "the clock struck twelve"), with AM/PM inference from context ("morning", "dinner", "dusk"). Each match gets a confidence level (high/medium/low).
+
+**Dependencies:** `pip install ebooklib beautifulsoup4 lxml`
+
 ## Roadmap
 
-- [ ] Import existing quote collection → JSON
-- [ ] Static site with time-based quote display
-- [ ] Typography selection (serif candidates: Libre Baskerville, Cormorant, EB Garamond)
-- [ ] Fade transitions
-- [ ] Multiple quotes per time slot
+- [x] Import existing quote collection → JSON (910 quotes)
+- [x] Static site with time-based quote display
+- [x] Typography selection (Cormorant Garamond)
+- [x] Deploy to simiono.com
+- [x] ePub quote extraction tool
+- [ ] Parse more books — grow the collection
+- [ ] Fill time gaps (minutes without any quote)
+- [ ] Smooth fade transitions between minutes
+- [ ] Multiple quotes per time slot (random cycle)
 - [ ] PWA manifest + service worker for offline
 - [ ] Screensaver builds (macOS, Windows)
-- [ ] Deploy to simiono.com
-
-## Inspirations
-
-The idea of a literary clock isn't new — but the execution matters. This version focuses on typographic craft, a curated personal collection, and the quiet pleasure of seeing time through the eyes of fiction.
+- [ ] German quotes as secondary collection
 
 ## License
 
