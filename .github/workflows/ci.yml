@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate HTML
+        run: |
+          test -f index.html || (echo "index.html missing" && exit 1)
+          echo "index.html exists ✓"
+
+      - name: Validate JSON data
+        run: |
+          for f in data/*.json; do
+            python3 -m json.tool "$f" > /dev/null || (echo "Invalid JSON: $f" && exit 1)
+            echo "Valid: $f ✓"
+          done
+
+      - name: Check for syntax errors in JS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: |
+          for f in js/*.js; do
+            node --check "$f" || (echo "Syntax error in $f" && exit 1)
+            echo "Syntax OK: $f ✓"
+          done
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install test dependencies
+        run: pip install pytest ebooklib beautifulsoup4 lxml
+
+      - name: Run extract tests
+        run: python3 -m pytest tests/ -v
