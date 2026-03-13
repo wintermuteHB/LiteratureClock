@@ -44,5 +44,8 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install test dependencies
+        run: pip install pytest
+
       - name: Run extract tests
         run: python3 -m pytest tests/ -v
