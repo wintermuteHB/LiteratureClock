@@ -45,7 +45,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install test dependencies
-        run: pip install pytest
+        run: pip install pytest ebooklib beautifulsoup4 lxml
 
       - name: Run extract tests
         run: python3 -m pytest tests/ -v
