@@ -4,6 +4,7 @@
   padding: 0;
 }
 
+/* Dark theme (default) */
 :root {
   --bg: #0d0d0d;
   --text: #e8e4df;
@@ -11,6 +12,15 @@
   --text-time: #3a3632;
   --accent: #c9b99a;
   --transition: 1.2s ease;
+}
+
+/* Light theme */
+[data-theme="light"] {
+  --bg: #f5f2ed;
+  --text: #1a1a1a;
+  --text-dim: #8a8580;
+  --text-time: #b8b3ad;
+  --accent: #7a6b52;
 }
 
 html, body {
@@ -135,6 +145,29 @@ body.idle {
 }
 
 body.idle footer {
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+
+/* === Theme Toggle === */
+#theme-toggle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-time);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.3s ease;
+}
+
+#theme-toggle:hover {
+  color: var(--text-dim);
+}
+
+body.idle #theme-toggle {
   opacity: 0;
   transition: opacity 2s ease;
 }

@@ -284,6 +284,35 @@
     }
   }
 
+  // --- Theme Toggle ---
+  function initTheme() {
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = saved || (prefersDark ? 'dark' : 'light');
+    applyTheme(theme);
+  }
+
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+    localStorage.setItem('theme', theme);
+    updateToggleLabel(theme);
+  }
+
+  function updateToggleLabel(theme) {
+    const btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+    btn.textContent = theme === 'dark' ? '☀ Light' : '● Dark';
+  }
+
+  function toggleTheme() {
+    const current = localStorage.getItem('theme') || 'dark';
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+  }
+
   // --- Init ---
   async function init() {
     try {
@@ -323,6 +352,10 @@
         document.exitFullscreen();
       }
     });
+
+    // Theme toggle
+    initTheme();
+    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
 
     // Show nav hint on first load for 4 seconds
     setTimeout(() => showNavHint(), 2000);
