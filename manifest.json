@@ -1,0 +1,19 @@
+{
+  "name": "Literature Clock",
+  "short_name": "Lit Clock",
+  "description": "Time told through the words of literature. A new quote for every minute of the day.",
+  "start_url": "./",
+  "display": "fullscreen",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "any",
+  "categories": ["books", "entertainment"],
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
