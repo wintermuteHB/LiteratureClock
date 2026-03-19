@@ -117,10 +117,11 @@ def process_book(epub_path: Path, existing_fps: set, dry_run: bool = False) -> d
                 high_quotes.append(entry)
                 existing_fps.add(fp)  # prevent intra-batch dupes
                 stats['high_added'] += 1
-            else:
+            elif q.confidence == 'medium':
                 review_entry = {**entry, 'confidence': q.confidence, 'time_match': q.time_match}
                 review_quotes.append(review_entry)
                 stats['review_queued'] += 1
+            # LOW confidence: silently dropped (too many false positives)
 
         if not dry_run:
             # Merge high-confidence into quotes.json

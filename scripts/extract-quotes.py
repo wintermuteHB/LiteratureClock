@@ -49,17 +49,22 @@ class TimeQuote:
 
 # 12-hour times: "3:45 AM", "three o'clock", "half past seven", "quarter to nine"
 PATTERNS = [
+    # ── HIGH confidence (unambiguous) ──
     # Digital: 3:45, 11:07 AM/PM, 03:45
     (r'\b(\d{1,2}):(\d{2})\s*(a\.?m\.?|p\.?m\.?|AM|PM|A\.M\.|P\.M\.)\b', 'digital_ampm'),
-    # Digital without AM/PM (contextual): "at 3:45" "by 11:07"
-    (r'(?:at|by|around|about|nearly|past|before|after|until|till|struck|striking|says?|read|said|showed?|clock\s+said|watch\s+said)\s+(\d{1,2}):(\d{2})', 'digital_context'),
     # Military/24h: 0800h, 2215h, 0300 hours
     (r'\b(\d{2})(\d{2})\s*(?:h\.?|hrs?\.?|hours)\b', 'military'),
+    # "it was midnight", "it was noon"
+    (r"\bit\s+was\s+(midnight|noon|midday)\b", 'noon_midnight'),
+
+    # ── MEDIUM confidence (real time refs, may need AM/PM) ──
+    # Digital without AM/PM (contextual): "at 3:45" "by 11:07"
+    (r'(?:at|by|around|about|nearly|past|before|after|until|till|struck|striking|says?|read|said|showed?|clock\s+said|watch\s+said)\s+(\d{1,2}):(\d{2})', 'digital_context'),
     # "X o'clock" with optional AM/PM
     (r"\b(\w+)\s+o['\u2019]?\s*clock(?:\s+(?:in the|at)\s+(?:morning|afternoon|evening|night))?\b", 'oclock'),
-    # "half past X", "half-past X"
+    # "half past X", "half-past X"  — MUST be before word_time to take priority
     (r"\bhalf[\s-]past\s+(\w+)\b", 'half_past'),
-    # "quarter past X", "quarter to X"
+    # "quarter past X", "quarter to X", "quarter before X"
     (r"\bquarter\s+(past|to|before|after)\s+(\w+)\b", 'quarter'),
     # "X minutes past/to Y"
     (r"\b(\w+)\s+minutes?\s+(past|to|before|after|of)\s+(\w+)\b", 'minutes_past_to'),
@@ -67,8 +72,8 @@ PATTERNS = [
     (r"\b(five|ten|twenty|twenty-five)\s+(past|to|before|after|of)\s+(\w+)\b", 'word_past_to'),
     # Struck/striking: "the clock struck twelve", "striking nine"
     (r"\b(?:struck|striking|strikes?|chim(?:ed?|ing))\s+(\w+)\b", 'struck'),
-    # "it was midnight", "it was noon"
-    (r"\bit\s+was\s+(midnight|noon|midday)\b", 'noon_midnight'),
+
+    # ── LOW confidence (often false positives like "by one arm") ──
     # Specific written times: "at seven", "by nine" (only with preposition)
     (r"\b(?:at|by|until|till|before|after|nearly|almost|just|past|about|around|approaching|nearing)\s+(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)(?:\s+(?:in the|at|that)\s+(?:morning|afternoon|evening|night))?\b", 'word_time'),
 ]
@@ -276,13 +281,24 @@ def find_time_quotes(text: str, title: str, author: str) -> list[TimeQuote]:
     seen = set()  # dedup by (minutes, first_50_chars)
 
     for sentence in sentences:
+        # Track matched character ranges to let higher-priority patterns win
+        matched_ranges = []
+
         # Provide surrounding context for AM/PM guessing
         for pattern, ptype in PATTERNS:
             for match in re.finditer(pattern, sentence, re.IGNORECASE):
+                # Skip if a higher-priority pattern already claimed this text region
+                m_start, m_end = match.start(), match.end()
+                if any(m_start < er and m_end > sr for sr, er in matched_ranges):
+                    continue
+
                 context = sentence  # use full sentence as context
                 minutes = parse_time(match, ptype, context)
                 if minutes is None:
                     continue
+
+                # Mark this range as claimed
+                matched_ranges.append((m_start, m_end))
 
                 # Extract a reasonable quote (up to ~300 chars around the match)
                 start = max(0, match.start() - 120)
