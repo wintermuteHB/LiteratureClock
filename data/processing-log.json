@@ -26,5 +26,83 @@
         "timestamp": "2026-03-19T12:59:55.598643"
       }
     ]
+  },
+  {
+    "batch_date": "2026-03-19T13:03:50.109211",
+    "books_processed": 7,
+    "quotes_added": 3,
+    "quotes_review": 524,
+    "details": [
+      {
+        "file": "pg2701.epub",
+        "title": "Moby Dick; Or, The Whale",
+        "author": "Herman Melville",
+        "total_found": 91,
+        "high_added": 1,
+        "review_queued": 90,
+        "duplicates": 0,
+        "timestamp": "2026-03-19T13:03:45.678001"
+      },
+      {
+        "file": "pg28054.epub",
+        "title": "The Brothers Karamazov",
+        "author": "Fyodor Dostoyevsky",
+        "total_found": 147,
+        "high_added": 0,
+        "review_queued": 147,
+        "duplicates": 0,
+        "timestamp": "2026-03-19T13:03:46.518076"
+      },
+      {
+        "file": "pg42324.epub",
+        "title": "Frankenstein; Or, The Modern Prometheus",
+        "author": "Mary Wollstonecraft Shelley",
+        "total_found": 39,
+        "high_added": 1,
+        "review_queued": 38,
+        "duplicates": 0,
+        "timestamp": "2026-03-19T13:03:47.797307"
+      },
+      {
+        "file": "pg4300.epub",
+        "title": "Ulysses",
+        "author": "James Joyce",
+        "total_found": 99,
+        "high_added": 0,
+        "review_queued": 99,
+        "duplicates": 0,
+        "timestamp": "2026-03-19T13:03:48.064642"
+      },
+      {
+        "file": "pg45.epub",
+        "title": "Anne of Green Gables",
+        "author": "L. M. Montgomery",
+        "total_found": 45,
+        "high_added": 0,
+        "review_queued": 45,
+        "duplicates": 0,
+        "timestamp": "2026-03-19T13:03:49.072655"
+      },
+      {
+        "file": "pg5200-images.epub",
+        "title": "Metamorphosis",
+        "author": "Franz Kafka",
+        "total_found": 25,
+        "high_added": 0,
+        "review_queued": 25,
+        "duplicates": 0,
+        "timestamp": "2026-03-19T13:03:49.467011"
+      },
+      {
+        "file": "pg98.epub",
+        "title": "A Tale of Two Cities",
+        "author": "Charles Dickens",
+        "total_found": 81,
+        "high_added": 1,
+        "review_queued": 80,
+        "duplicates": 0,
+        "timestamp": "2026-03-19T13:03:49.554008"
+      }
+    ]
   }
 ]
