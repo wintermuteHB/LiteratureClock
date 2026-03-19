@@ -20,13 +20,15 @@ import hashlib
 import re
 import sys
 import os
+import warnings
 from pathlib import Path
 from dataclasses import dataclass, field
 
 try:
     import ebooklib
     from ebooklib import epub
-    from bs4 import BeautifulSoup
+    from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
+    warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 except ImportError:
     print("Missing dependencies. Install with:")
     print("  pip install ebooklib beautifulsoup4 lxml")

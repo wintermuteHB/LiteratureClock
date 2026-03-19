@@ -1,0 +1,30 @@
+[
+  {
+    "batch_date": "2026-03-19T12:59:56.028281",
+    "books_processed": 2,
+    "quotes_added": 1,
+    "quotes_review": 102,
+    "details": [
+      {
+        "file": "pg64317.epub",
+        "title": "The Great Gatsby",
+        "author": "F. Scott Fitzgerald",
+        "total_found": 63,
+        "high_added": 1,
+        "review_queued": 45,
+        "duplicates": 17,
+        "timestamp": "2026-03-19T12:59:55.387312"
+      },
+      {
+        "file": "pg768.epub",
+        "title": "Wuthering Heights",
+        "author": "Emily Brontë",
+        "total_found": 62,
+        "high_added": 0,
+        "review_queued": 57,
+        "duplicates": 5,
+        "timestamp": "2026-03-19T12:59:55.598643"
+      }
+    ]
+  }
+]
